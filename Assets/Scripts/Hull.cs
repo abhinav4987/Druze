@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Hull : MonoBehaviour
 {
-    private float healthPoint;
+    float healthPoint;
 
     
-    private float defence;
+    float defence;
 
-    private int cannonColumnsCount = 2;
+    int cannonColumnsCount = 2;
 
 
     Cannons[] shipCannonColumn = new Cannons[cannonColumns];
