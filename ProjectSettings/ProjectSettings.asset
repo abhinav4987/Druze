@@ -5,10 +5,9 @@ PlayerSettings:
   m_ObjectHideFlags: 0
 
   serializedVersion: 22
-  productGUID: f3f4f739959e4ae40b8dd4a2bd59de4c
 
-  serializedVersion: 20
-  productGUID: 18abd1a35798eca41aeea2a32057ee0b
+  productGUID: 9186d98de7c1d554ea9ab200a6264499
+
 
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
@@ -19,9 +18,10 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
 
-  productName: Cannon_cannonBall
+
 
   productName: WoO-Engage
+
 
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -619,6 +619,9 @@ PlayerSettings:
   ps4videoRecordingFeaturesUsed: 0
   ps4contentSearchFeaturesUsed: 0
   ps4CompatibilityPS5: 0
+
+  ps4AllowPS5Detection: 0
+
   ps4GPU800MHz: 1
   ps4attribEyeToEyeDistanceSettingVR: 0
   ps4IncludedModules: []
@@ -674,9 +677,10 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   additionalCompilerArguments: {}
 
+
   
   webGLWasmStreaming: 0
-  
+
 
   platformArchitecture: {}
   scriptingBackend: {}
@@ -784,9 +788,14 @@ PlayerSettings:
   legacyClampBlendShapeWeights: 0
   virtualTexturingSupportEnabled: 0
 
+
    
   
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
   
+
+ 
+  legacyClampBlendShapeWeights: 0
+
 

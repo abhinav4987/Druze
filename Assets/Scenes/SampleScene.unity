@@ -100,6 +100,7 @@ LightmapSettings:
     m_PVRFilterTypeAO: 0
     m_PVREnvironmentMIS: 0
 
+
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -117,6 +118,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
   
   m_UseShadowmask: 1
+
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
