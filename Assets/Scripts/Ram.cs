@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Ram : MonoBehaviour
 {
     private float maxDamage;
