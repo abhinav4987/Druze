@@ -5,7 +5,9 @@ PlayerSettings:
   m_ObjectHideFlags: 0
 
   serializedVersion: 22
+
   productGUID: 9186d98de7c1d554ea9ab200a6264499
+
 
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
@@ -16,7 +18,10 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
 
-  productName: Hull
+
+
+  productName: WoO-Engage
+
 
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -364,7 +369,7 @@ PlayerSettings:
     m_Automatic: 1
   - m_BuildTarget: AppleTVSupport
     m_APIs: 10000000
-<
+
     m_Automatic: 1
 
   - m_BuildTarget: WebGLSupport
@@ -543,6 +548,7 @@ PlayerSettings:
 
   switchUseMicroSleepForYield: 1
   switchMicroSleepForYieldTime: 25
+
   ps4NPAgeRating: 12
   ps4NPTitleSecret: 
   ps4NPTrophyPackPath: 
@@ -671,7 +677,10 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   additionalCompilerArguments: {}
 
+
+  
   webGLWasmStreaming: 0
+
 
   platformArchitecture: {}
   scriptingBackend: {}
@@ -779,6 +788,14 @@ PlayerSettings:
   legacyClampBlendShapeWeights: 0
   virtualTexturingSupportEnabled: 0
 
+
+   
+  
+  enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
+  
+
+ 
   legacyClampBlendShapeWeights: 0
+
 
