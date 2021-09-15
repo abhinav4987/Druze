@@ -24,3 +24,4 @@ public class ShipAIParameters
         parameters.enemyTransform = enemyTransform;
     }
 }
+
