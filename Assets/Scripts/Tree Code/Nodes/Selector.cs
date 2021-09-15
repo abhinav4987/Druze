@@ -6,18 +6,16 @@ public class Selector : Node
 {
     protected List<Node> nodes = new List<Node>();
 
-    public Sequence(List<Node> nodes)
+    public Selector(List<Node> nodes)
     {
         this.nodes = nodes;
     }
 
-    public override NodeStates Evaluate()
+    public override NodeState Evaluate(ShipAIParameters shipParameters, ShipAIActionControls shipControls)
     {
-        bool isAnyChildRunning = false;
-
         foreach (var node in nodes)
         {
-            switch (node.Evaluate())
+            switch (node.Evaluate(shipParameters, shipControls))
             {
                 case NodeState.RUNNING:
                     _nodeState = NodeState.RUNNING;
@@ -27,8 +25,6 @@ public class Selector : Node
                     _nodeState = NodeState.SUCCESS;
                     return _nodeState;
                 case NodeState.FAILURE:
-                    break;
-                default:
                     break;
             }
         }

@@ -33,6 +33,7 @@ public class Hull : MonoBehaviour
 
     CannonGroup[] shipCannonGroups;
 
+    [HideInInspector]
     public Sail shipSail;
     Ram shipRam;
 
@@ -52,11 +53,25 @@ public class Hull : MonoBehaviour
         healthPoint = newHealthPoint;
     }
 
-    public void SetCannonAngle(int groupIndex, float angle) {
-        foreach(Cannon cannon in shipCannonGroups[groupIndex].cannons)
+    public void SetCannonAngle(float angle)
+    {
+        foreach (CannonGroup cannonGroup in shipCannonGroups)
         {
-            cannon.SetAngle(angle);
+            foreach (Cannon cannon in cannonGroup.cannons)
+            {
+                cannon.SetAngle(angle);
+            }
         }
+    }
+
+    public float GetCannonAngle()
+    {
+        return shipCannonGroups[0].cannons[0].GetAngle();
+    }
+
+    public void ChangeCannonAngle(float increment)
+    {
+        SetCannonAngle(GetCannonAngle() + increment);
     }
 
     public void FireCannons(int groupIndex) {

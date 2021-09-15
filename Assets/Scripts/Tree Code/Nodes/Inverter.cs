@@ -11,22 +11,19 @@ public class Inverter : Node
         this.node = node;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(ShipAIParameters shipParameters, ShipAIActionControls shipControls)
     {
         
-            switch (node.Evaluate())
+            switch (node.Evaluate(shipParameters, shipControls))
             {
                 case NodeState.RUNNING:
                 _nodeState = NodeState.RUNNING;
                     break;
                 case NodeState.SUCCESS:
                 _nodeState = NodeState.FAILURE;
-
-                break;
+                    break;
                 case NodeState.FAILURE:
                 _nodeState = NodeState.SUCCESS;
-                break;
-                default:
                     break;
             }
        

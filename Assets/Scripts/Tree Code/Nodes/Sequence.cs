@@ -11,13 +11,13 @@ public class Sequence : Node
         this.nodes = nodes;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(ShipAIParameters shipParameters, ShipAIActionControls shipControls)
     {
         bool isAnyChildRunning = false;
 
         foreach (var node in nodes)
         {
-            switch (node.Evaluate())
+            switch (node.Evaluate(shipParameters, shipControls))
             {
                 case NodeState.RUNNING:
                     isAnyChildRunning = true;
@@ -27,8 +27,6 @@ public class Sequence : Node
                 case NodeState.FAILURE:
                     _nodeState = NodeState.FAILURE;
                     return _nodeState;
-                default:
-                    break;
             }
         }
         _nodeState = isAnyChildRunning ? NodeState.RUNNING : NodeState.SUCCESS;
