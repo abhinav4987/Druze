@@ -5,10 +5,11 @@ using UnityEngine;
 public class WaterMoverScript : MonoBehaviour
 {
 
-    public Vector3 targetPosition;
+    public Transform targetTransform;
 
     void Update()
     {
+        Vector3 targetPosition = targetTransform.position;
         transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
     }
 }
