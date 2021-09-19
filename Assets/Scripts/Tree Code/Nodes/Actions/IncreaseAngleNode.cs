@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collection.Generic;
-using UnityEngine;
-
-public class TurnLeft : Node {
+public class IncreaseAngleNode : Node {
 
     public override NodeState Evaluate(ShipAIParameters shipParameters, ShipAIActionControls shipControls)
     {
-        shipControls.TurnLeft();
+        shipControls.IncreaseCannonAngle();
         return NodeState.SUCCESS;
     }
 }

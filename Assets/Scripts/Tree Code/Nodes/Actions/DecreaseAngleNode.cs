@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collection.Generic;
-using UnityEngine;
-
-public class DecreaseAngle : Node {
+public class DecreaseAngleNode : Node {
 
     public override NodeState Evaluate(ShipAIParameters shipParameters, ShipAIActionControls shipControls)
     {

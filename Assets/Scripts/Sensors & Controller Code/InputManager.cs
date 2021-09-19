@@ -35,12 +35,7 @@ public class InputManager : MonoBehaviour
         isRotating = true;
     }
 
-    public void SetLeftCannonGroupAngle(float value)
-    {
-        hull.SetCannonAngle(value);
-    }
-
-    public void SetRightCannonGroupAngle(float value)
+    public void SetCannonAngle(float value)
     {
         hull.SetCannonAngle(value);
     }
@@ -53,6 +48,16 @@ public class InputManager : MonoBehaviour
     public void DecreaseSailLevel()
     {
         hull.shipSail.ChangeSailLevel(increment: false);
+    }
+
+    public void ShootLeftCannon()
+    {
+        hull.FireCannons(0);
+    }
+
+    public void ShootRightCannon()
+    {
+        hull.FireCannons(1);
     }
 
     private void FixedUpdate()

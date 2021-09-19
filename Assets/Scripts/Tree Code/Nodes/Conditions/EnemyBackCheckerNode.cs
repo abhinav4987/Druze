@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collection.Generic;
 using UnityEngine;
 
 public class EnemyBackCheckerNode : Node {
 
-Vector3 currentPosition;
-
     public override NodeState Evaluate(ShipAIParameters shipParameters, ShipAIActionControls shipControls)
     {
-        return shipParameters.enemyTransform.Position.y < currentPosition.Position.y ? NodeState.SUCCESS : NodeState.FAILURE;
+        return shipParameters.parameters.GetEnemyRelativeFromSelf().x < 0 ? NodeState.SUCCESS : NodeState.FAILURE;
     }
 }

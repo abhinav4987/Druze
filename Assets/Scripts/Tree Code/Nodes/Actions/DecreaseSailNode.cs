@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collection.Generic;
-using UnityEngine;
-
-public class IncreaseSail : Node {
-
+public class DecreaseSailNode : Node {
     public override NodeState Evaluate(ShipAIParameters shipParameters, ShipAIActionControls shipControls)
     {
-        shipControls.IncreaseSail();
+        shipControls.DecreaseSail();
         return NodeState.SUCCESS;
     }
 }
+
+

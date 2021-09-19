@@ -35,7 +35,24 @@ public class Hull : MonoBehaviour
 
     [HideInInspector]
     public Sail shipSail;
-    Ram shipRam;
+    private Ram shipRam;
+
+    private Transform shipTransform;
+
+    public Transform GetShipTransform()
+    {
+        return shipTransform;
+    }
+
+    public float GetPrevCollisionTime()
+    {
+        return shipRam.GetPrevCollisionTime();
+    }
+
+    public float GetTurnSpeed()
+    {
+        return turnSpeed;
+    }
 
     public float GetCurrentSpeed() {
         return currentSpeed;
@@ -69,6 +86,16 @@ public class Hull : MonoBehaviour
         return shipCannonGroups[0].cannons[0].GetAngle();
     }
 
+    public float GetCannonInitialSpeed()
+    {
+        return shipCannonGroups[0].cannons[0].GetInitialSpeed();
+    }
+
+    public bool GetCannonGroupReady(int groupIndex)
+    {
+        return shipCannonGroups[groupIndex].cannons[0].IsCannonReady();
+    }
+
     public void ChangeCannonAngle(float increment)
     {
         SetCannonAngle(GetCannonAngle() + increment);
@@ -85,8 +112,9 @@ public class Hull : MonoBehaviour
         healthPoint -= damageIncurred;
     }
 
-    public void RotateHull(bool leftRotate) {
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + (leftRotate ? -1.0f : 1.0f) * turnSpeed * Time.deltaTime , 0);
+    public void RotateHull(bool leftRotate, float modifierValue = 1)
+    {
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + (leftRotate ? -1.0f : 1.0f) * modifierValue * turnSpeed * Time.deltaTime, 0);
     }
 
     void UpdateCurrentSpeed () {
@@ -108,6 +136,7 @@ public class Hull : MonoBehaviour
 
     private void Start()
     {
+        shipTransform = GetComponentInChildren<Transform>();
         rb = GetComponent<Rigidbody>();
         InitializeCannons();
         shipSail = GetComponentInChildren<Sail>();

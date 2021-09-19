@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class ShipAIActionControls : MonoBehaviour
 {
+    [SerializeField]
     private Hull hull;
-    void Start()
+
+    [SerializeField]
+    private float angleChangeSpeed = 5f;
+    
+    private void Start()
     {
         hull = GetComponentInChildren<Hull>();
     }
@@ -46,13 +51,13 @@ public class ShipAIActionControls : MonoBehaviour
 
     public void IncreaseCannonAngle()
     {
-        float angleIncrementUnit = 0.5f;
-        ChangeCannonAngle(angleIncrementUnit);
+        float angleIncrement = angleChangeSpeed * Time.deltaTime;
+        ChangeCannonAngle(angleIncrement);
     }
     public void DecreaseCannonAngle()
     {
-        float angleDecrementUnit = 0.5f;
-        ChangeCannonAngle(-angleDecrementUnit);
+        float angleDecrement = angleChangeSpeed * Time.deltaTime;
+        ChangeCannonAngle(-angleDecrement);
     }
 
     public void FireCannon(int cannonGroupIndex)
@@ -60,6 +65,10 @@ public class ShipAIActionControls : MonoBehaviour
         hull.FireCannons(groupIndex: cannonGroupIndex);
     }
 
-
+    public void ExtremeRotation(bool leftDir)
+    {
+        float turnSpeedModifier = 2f;
+        hull.RotateHull(leftRotate: leftDir, modifierValue: turnSpeedModifier);
+    }
 }
 
