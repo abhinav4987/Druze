@@ -37,7 +37,7 @@ public class InputManager : MonoBehaviour
 
     public void SetCannonAngle(float value)
     {
-        hull.SetCannonAngle(value);
+        hull.SetCannonAngle(value, normalized: true);
     }
 
     public void IncreaseSailLevel()

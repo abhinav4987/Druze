@@ -9,6 +9,8 @@ public class CannonShootDistanceLessNode : Node
 
         float calculatedShootDistance = (initialSpeed * initialSpeed * Mathf.Sin(2 * angle)) / gravityAcc;
 
+        Debug.DrawRay(shipParameters.parameters.GetSelfTransform().position, shipParameters.parameters.GetSelfTransform().forward * calculatedShootDistance, Color.green, Time.deltaTime);
+
         return calculatedShootDistance < shipParameters.parameters.GetDistanceBetweenSelfAndEnemy() ? NodeState.SUCCESS : NodeState.FAILURE;
     }
 }

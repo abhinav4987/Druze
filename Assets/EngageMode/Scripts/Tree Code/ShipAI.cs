@@ -9,14 +9,24 @@ public class ShipAI : MonoBehaviour
     public ShipAIActionControls shipControls;
 
     public float threshold;
-    public float shootingRange;
+    private float shootingRange;
     public float collisionRange;
     public float maneuverableAngle;
     public Hull selfHull;
     public Hull enemyHull;
 
+    [SerializeField]
+    private Transform debugCenterTransform;
+
+    private float cannonMaxShootDistance(float initialSpeed, float angle)
+    {
+        return (initialSpeed * initialSpeed * Mathf.Sin(2 * angle)) / Physics.gravity.magnitude;
+    }
+
     void Start()
     {
+        shootingRange = cannonMaxShootDistance(selfHull.GetCannonInitialSpeed(), selfHull.GetMaxCannonAngle() * Mathf.Deg2Rad);
+
         shipParameters = new ShipAIParameters(
                 threshold,
                 shootingRange,
@@ -70,11 +80,13 @@ public class ShipAI : MonoBehaviour
 
         HealthCheckerNode healthCheckerNode = new HealthCheckerNode();
 
-        DesiredAngleCheckerNode desiredAngleCheckerNode = new DesiredAngleCheckerNode();
-        DesiredCannoRreadyCheckerNode desiredCannoRreadyCheckerNode = new DesiredCannoRreadyCheckerNode();
+        float verticalAllowedAngleRange = 1.5f, horizontalAllowedAngleRange = 3.0f, targetAngle = 90f;
+        DesiredAngleCheckerNode desiredAngleCheckerNode = new DesiredAngleCheckerNode(verticalAllowedAngleRange);
+        ShipAlignmentCheckerNode shipAlignmentCheckerNode = new ShipAlignmentCheckerNode(horizontalAllowedAngleRange, targetAngle);
+        DesiredCannoRreadyCheckerNode desiredCannonReadyCheckerNode = new DesiredCannoRreadyCheckerNode();
 
         //Collection Nodes
-        Sequence FireCannon = new Sequence(new List<Node>() { desiredCannoRreadyCheckerNode, fireCannonNode });
+        Sequence FireCannon = new Sequence(new List<Node>() { desiredCannonReadyCheckerNode, fireCannonNode });
         Sequence HitByRam = new Sequence(new List<Node>() { new Inverter(collidedWithinNode), faceTowardsEnemyNode, increaseSailNode });
 
         Sequence angleIncreaserSequence = new Sequence(new List<Node>() { cannonShootDistanceLessNode, increaseAngleNode });
@@ -116,13 +128,13 @@ public class ShipAI : MonoBehaviour
         Sequence MoveStrategically = new Sequence(new List<Node>() { enemyTurnSelector, enemyMoveSelector });
 
         //Main Tree Nodes
-        Sequence shootingSequence = new Sequence(new List<Node>() { shootingRangeCheckerNode, AlignCannonAngle, desiredCannoRreadyCheckerNode, FireCannon });
+        Sequence shootingSequence = new Sequence(new List<Node>() { shootingRangeCheckerNode, AlignCannonAngle, shipAlignmentCheckerNode, desiredCannonReadyCheckerNode, FireCannon });
 
         Sequence towardsEnemySequence = new Sequence(new List<Node>() { TurnTowardsEnemy, SailTowardaEnemy });
         Sequence sailTowardsSequence = new Sequence(new List<Node>() { new Inverter(collisionRangeCheckerNode), towardsEnemySequence });
 
         Selector aggressiveMoveSelector = new Selector(new List<Node>() { sailTowardsSequence, HitByRam });
-        Sequence aggressiveActionSequence = new Sequence(new List<Node>() { shootingSequence, aggressiveMoveSelector });
+        Selector aggressiveActionSelector = new Selector(new List<Node>() { aggressiveMoveSelector, shootingSequence });
 
         Sequence moveAwaySequence = new Sequence(new List<Node>() { collisionRangeCheckerNode, MoveAway });
         Sequence moveStrategicallySequence = new Sequence(new List<Node>() { shootingRangeCheckerNode, MoveStrategically });
@@ -131,7 +143,7 @@ public class ShipAI : MonoBehaviour
 
         Sequence defensiveSequence = new Sequence(new List<Node>() { defensiveMoveSelector, shootingSequence });
 
-        Sequence aggressiveSequence = new Sequence(new List<Node>() { healthCheckerNode, aggressiveActionSequence });
+        Sequence aggressiveSequence = new Sequence(new List<Node>() { healthCheckerNode, aggressiveActionSelector });
 
         topNode = new Selector(new List<Node>() { aggressiveSequence, defensiveSequence });
     }
@@ -144,8 +156,8 @@ public class ShipAI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, shootingRange);
+        Gizmos.DrawWireSphere(debugCenterTransform.position, shootingRange);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, collisionRange);
+        Gizmos.DrawWireSphere(debugCenterTransform.position, collisionRange);
     }
 }

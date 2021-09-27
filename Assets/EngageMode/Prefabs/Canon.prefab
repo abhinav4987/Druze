@@ -269,8 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c58a37ae1501843ac3033a07a4ac14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reloadTime: 5
-  initialSpeed: 5
-  maxAngle: 35
+  reloadTime: 10
+  initialSpeed: 10
+  maxAngle: 30
   cannonBall: {fileID: 4628778808420785669, guid: f2f3790e879b1d24c9342f98e0074b1a,
     type: 3}
