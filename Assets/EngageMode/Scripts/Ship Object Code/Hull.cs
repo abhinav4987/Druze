@@ -9,6 +9,7 @@ public class Hull : MonoBehaviour
     private Rigidbody rb;
 
     public GameObject cannonPrefab;
+
     [System.Serializable]
     public struct CannonLocations
     {
@@ -36,6 +37,8 @@ public class Hull : MonoBehaviour
     [HideInInspector]
     public Sail shipSail;
     private Ram shipRam;
+
+    private CannonGroupTrajectoryInfo cannonGroupTrajectoryInfo;
 
     private Transform shipTransform;
 
@@ -70,8 +73,18 @@ public class Hull : MonoBehaviour
         healthPoint = newHealthPoint;
     }
 
-    public void SetCannonAngle(float angle)
+    public float GetMaxCannonAngle()
     {
+        return shipCannonGroups[0].cannons[0].GetMaxAngle();
+    }
+
+    public void SetCannonAngle(float angle, bool normalized = false)
+    {
+        if(!normalized)
+        {
+            float maxAngle = shipCannonGroups[0].cannons[0].GetMaxAngle();
+            angle /= maxAngle;
+        }
         foreach (CannonGroup cannonGroup in shipCannonGroups)
         {
             foreach (Cannon cannon in cannonGroup.cannons)
@@ -114,7 +127,8 @@ public class Hull : MonoBehaviour
 
     public void RotateHull(bool leftRotate, float modifierValue = 1)
     {
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + (leftRotate ? -1.0f : 1.0f) * modifierValue * turnSpeed * Time.deltaTime, 0);
+        rb.AddTorque(0, (leftRotate ? -1.0f : 1.0f) * modifierValue * turnSpeed * Time.deltaTime, 0, ForceMode.Acceleration);
+        //transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + (leftRotate ? -1.0f : 1.0f) * modifierValue * turnSpeed * Time.deltaTime, 0);
     }
 
     void UpdateCurrentSpeed () {
@@ -136,25 +150,47 @@ public class Hull : MonoBehaviour
 
     private void Start()
     {
+        transform.parent.gameObject.TryGetComponent(out cannonGroupTrajectoryInfo);
         shipTransform = GetComponentInChildren<Transform>();
         rb = GetComponent<Rigidbody>();
-        InitializeCannons();
         shipSail = GetComponentInChildren<Sail>();
         shipRam = GetComponentInChildren<Ram>();
+
+        InitializeCannons();
     }
 
     private void InitializeCannons()
     {
+        CannonGroupTrajectoryInfo.CannonGroupParams groupParams;
+        if (cannonGroupTrajectoryInfo != null)
+            cannonGroupTrajectoryInfo.InitializeGroupTrajectoryInfo(cannonLocationGroup.Length);
         shipCannonGroups = new CannonGroup[cannonLocationGroup.Length];
         int i = 0;
         foreach (CannonLocations cannonLocation in cannonLocationGroup)
         {
             int j = 0;
+            Vector3 groupMeanPosition = Vector3.zero;
+
             shipCannonGroups[i].cannons = new Cannon[cannonLocation.locations.Length];
+
             foreach (Transform location in cannonLocation.locations)
             {
+                groupMeanPosition += location.position;
                 shipCannonGroups[i].cannons[j++] = Instantiate(cannonPrefab, location.position, location.rotation, transform).GetComponentInChildren<Cannon>();
             }
+
+            groupMeanPosition /= cannonLocation.locations.Length;
+            groupMeanPosition = transform.InverseTransformPoint(groupMeanPosition);
+
+            Transform groupTransform = cannonLocation.locations[0];
+            float minWidth = 0.2f;
+            float width = Mathf.Max(minWidth, Vector3.Distance(cannonLocation.locations[0].position, cannonLocation.locations[cannonLocation.locations.Length - 1].position));
+
+            groupParams = new CannonGroupTrajectoryInfo.CannonGroupParams() { centerPosition = groupMeanPosition, transform = groupTransform , width = width };
+
+            if (cannonGroupTrajectoryInfo != null)
+                cannonGroupTrajectoryInfo.SetCannonGroupTrajectoryInfo(i, groupParams);
+
             i++;
         }
     }

@@ -66,6 +66,11 @@ public class Cannon : MonoBehaviour
     {
         return angleNormalizedValue * maxAngle;
     }
+
+    public float GetMaxAngle()
+    {
+        return maxAngle;
+    }
     public void SetAngle(float angleNormalizedValue)
     {
         this.angleNormalizedValue = Mathf.Clamp(angleNormalizedValue, 0, 1);
