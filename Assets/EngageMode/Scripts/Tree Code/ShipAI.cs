@@ -80,7 +80,7 @@ public class ShipAI : MonoBehaviour
 
         HealthCheckerNode healthCheckerNode = new HealthCheckerNode();
 
-        float verticalAllowedAngleRange = 1.5f, horizontalAllowedAngleRange = 3.0f, targetAngle = 90f;
+        float verticalAllowedAngleRange = 0.5f, horizontalAllowedAngleRange = 3.0f, targetAngle = 90f;
         DesiredAngleCheckerNode desiredAngleCheckerNode = new DesiredAngleCheckerNode(verticalAllowedAngleRange);
         ShipAlignmentCheckerNode shipAlignmentCheckerNode = new ShipAlignmentCheckerNode(horizontalAllowedAngleRange, targetAngle);
         DesiredCannoRreadyCheckerNode desiredCannonReadyCheckerNode = new DesiredCannoRreadyCheckerNode();

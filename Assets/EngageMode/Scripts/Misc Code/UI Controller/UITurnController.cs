@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UISailLevelController : MonoBehaviour
+public class UITurnController : MonoBehaviour
 {
-    public float threshold = 5f;
-    float beginY;
     private Image image;
 
 
     [SerializeField]
     private InputManager inputManager;
 
-    [Range(0,1)]
+    [Range(0, 1)]
     public float visibleAlpha = 0.7f;
+
+    [SerializeField]
+    private bool leftDirection;
 
     private Color inactiveColor, activeColor;
 
@@ -25,22 +26,14 @@ public class UISailLevelController : MonoBehaviour
         activeColor = image.color * new Color(1, 1, 1, 0) + new Color(0, 0, 0, visibleAlpha);
     }
 
-    public void SetY()
+    public void RotateHandler()
     {
-        beginY = Input.mousePosition.y;
-        image.color = activeColor;
+        if (leftDirection) inputManager.RotateLeft();
+        else inputManager.RotateRight();
     }
 
-    public void SwipeHandler()
+    public void StopRotate()
     {
-
-        float diffY = Input.mousePosition.y - beginY;
-
-        if(Mathf.Abs(diffY) > threshold)
-        {
-            inputManager.ChangeSailLevel(diffY > 0);
-        }
-
-        image.color = inactiveColor;
+        inputManager.StopRotation();
     }
 }

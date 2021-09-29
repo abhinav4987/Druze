@@ -29,7 +29,7 @@ public class ShipAIParameters
 
         public float GetSelfHealth()
         {
-            return selfHull.GetHealthPoint();
+            return selfHull.GetCurrentHealth();
         }
 
         public void SetEnemyHull(Hull enemyHull)
@@ -44,7 +44,7 @@ public class ShipAIParameters
 
         public float GetEnemyHealth()
         {
-            return enemyHull.GetHealthPoint();
+            return enemyHull.GetCurrentHealth();
         }
 
         public Vector3 GetEnemyRelativeFromSelf()

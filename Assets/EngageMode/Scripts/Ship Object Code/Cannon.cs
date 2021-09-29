@@ -8,6 +8,8 @@ public class Cannon : MonoBehaviour
 
     private bool reloaded = true;
 
+    private float remaningReloadTime = 0;
+
     [SerializeField]
     private float reloadTime;
 
@@ -29,19 +31,42 @@ public class Cannon : MonoBehaviour
             reloaded = false;
             Rigidbody rb = Instantiate(cannonBall, cannonBallLocation.position, cannonBallLocation.rotation).GetComponent<Rigidbody>();
             rb.velocity = cannonBallLocation.forward * initialSpeed;
+            remaningReloadTime = reloadTime;
             StartCoroutine(Reload());
         }
+    }
+
+    private void DecreaseTimeVal()
+    {
+        remaningReloadTime = Mathf.Max(remaningReloadTime - Time.deltaTime, 0);
     }
    
     IEnumerator Reload()
     {
-        yield return new WaitForSeconds(reloadTime);
+        while(true)
+        {
+            yield return new WaitForSeconds(Time.deltaTime);
+            DecreaseTimeVal();
+            if (remaningReloadTime == 0)
+                break;
+        }
         reloaded = true;
+        yield return null;
     }
 
     public bool IsCannonReady()
     {
         return reloaded;
+    }
+
+    public float GetNormalizedRemaningTime()
+    {
+        return remaningReloadTime / reloadTime;
+    }
+
+    public float GetRemaningTime()
+    {
+        return remaningReloadTime;
     }
 
     public float GetInitialSpeed()

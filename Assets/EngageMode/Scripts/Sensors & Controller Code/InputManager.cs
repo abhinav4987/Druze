@@ -11,6 +11,11 @@ public class InputManager : MonoBehaviour
     private bool isRotating;
     private bool isLeftDirection;
 
+    private int index = 0;
+
+    [SerializeField]
+    private Transform mainCameraTransform;
+
     void Start()
     {
         isRotating = false;
@@ -40,6 +45,11 @@ public class InputManager : MonoBehaviour
         hull.SetCannonAngle(value, normalized: true);
     }
 
+    public void ChangeSailLevel(bool increase)
+    {
+        hull.shipSail.ChangeSailLevel(increment: increase);
+    }
+
     public void IncreaseSailLevel()
     {
         hull.shipSail.ChangeSailLevel(increment: true);
@@ -50,6 +60,21 @@ public class InputManager : MonoBehaviour
         hull.shipSail.ChangeSailLevel(increment: false);
     }
 
+    public bool GetIsCannonBuilt()
+    {
+        return hull.GetIsCannonBuilt();
+    }
+
+    public float GetReloadTime()
+    {
+        return hull.GetReloadTime(index);
+    }
+
+    public float GetCurrentReloadTime()
+    {
+        return hull.GetCurrentReloadTime(index);
+    }
+
     public void ShootLeftCannon()
     {
         hull.FireCannons(0);
@@ -58,6 +83,34 @@ public class InputManager : MonoBehaviour
     public void ShootRightCannon()
     {
         hull.FireCannons(1);
+    }
+
+    public void ShootCannon()
+    {
+        hull.FireCannons(index);
+    }
+
+    private void CalculateClosestIndex()
+    {
+        Vector3 cameraForward = mainCameraTransform.forward;
+        int minIndex = 0, i = 0;
+        float maxDot = -1;
+        foreach( var cannonLocations in hull.cannonLocationGroup)
+        {
+            float currentDot = Vector3.Dot(cameraForward, cannonLocations.locations[0].forward);
+            if ( currentDot > maxDot )
+            {
+                minIndex = i;
+                maxDot = currentDot;
+            }
+            i++;
+        }
+        index = minIndex;
+    }
+
+    private void Update()
+    {
+        CalculateClosestIndex();
     }
 
     private void FixedUpdate()

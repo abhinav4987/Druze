@@ -16,15 +16,19 @@ public class UIAngleController : MonoBehaviour
     [SerializeField]
     private InputManager inputManager;
 
+    private Color inactiveColor, activeColor;
+
     private void Start()
     {
-        parentRectTransform = transform.parent.gameObject.GetComponent<RectTransform>();
-        rectTransform = GetComponent<RectTransform>();
+        parentRectTransform = transform.parent.parent.gameObject.GetComponent<RectTransform>();
+        rectTransform = transform.parent.GetComponent<RectTransform>();
         image = GetComponent<Image>();
+        activeColor = new Color(1, 1, 1, 0) * image.color + new Color(0, 0, 0, visibleAlpha);
+        inactiveColor = image.color;
     }
     public void SetIdentifierPosition()
     {
-        image.color = new Color(1, 1, 1, 0) * image.color + new Color(0, 0, 0, visibleAlpha);
+        image.color = activeColor;
         float parentOffset = (Screen.height - parentRectTransform.rect.height);
         float mouseY = Input.mousePosition.y - parentOffset;
         mouseY = Mathf.Clamp(mouseY / (Screen.height - 2 * parentOffset), 0, 1);
@@ -35,6 +39,6 @@ public class UIAngleController : MonoBehaviour
 
     public void HideIndicator()
     {
-        image.color = new Color(1, 1, 1, 0) * image.color;
+        image.color = inactiveColor;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 
@@ -9,6 +10,10 @@ public class Hull : MonoBehaviour
     private Rigidbody rb;
 
     public GameObject cannonPrefab;
+
+    public event EventHandler OnDamage;
+
+    private bool isCannonBuild = false;
 
     [System.Serializable]
     public struct CannonLocations
@@ -24,7 +29,8 @@ public class Hull : MonoBehaviour
     }
 
     [SerializeField]
-    private float healthPoint;
+    private float maxHealth;
+    private float currentHealth;
     
     private float currentSpeed = 0;
     private float defence;
@@ -65,12 +71,31 @@ public class Hull : MonoBehaviour
         currentSpeed = newSpeed;
     }
 
-    public float GetHealthPoint() {
-        return healthPoint;
+    public float GetMaxHealth() {
+        return maxHealth;
+    }
+
+    public float GetCurrentHealth() {
+        return currentHealth;
     }
 
     public void SetHealthPoint(int newHealthPoint) {
-        healthPoint = newHealthPoint;
+        maxHealth = newHealthPoint;
+    }
+
+    public float GetReloadTime(int index)
+    {
+        return shipCannonGroups[index].cannons[0].GetReloadTime();
+    }
+
+    public float GetCurrentReloadTime(int index)
+    {
+        return shipCannonGroups[index].cannons[0].GetRemaningTime();
+    }
+
+    public float GetNormalizedRemainingReloadTime(int index)
+    {
+        return shipCannonGroups[index].cannons[0].GetNormalizedRemaningTime();
     }
 
     public float GetMaxCannonAngle()
@@ -122,8 +147,9 @@ public class Hull : MonoBehaviour
     }
 
     public void TakeDmage(float damageIncurred) {
-        healthPoint -= damageIncurred;
-    }
+        currentHealth = Mathf.Clamp(currentHealth - damageIncurred,0, maxHealth);
+        OnDamage?.Invoke(this, EventArgs.Empty);
+}
 
     public void RotateHull(bool leftRotate, float modifierValue = 1)
     {
@@ -146,6 +172,11 @@ public class Hull : MonoBehaviour
     void FixedUpdate()
     {
         UpdateCurrentSpeed();
+    }
+
+    private void Awake()
+    {
+        currentHealth = maxHealth;
     }
 
     private void Start()
@@ -193,6 +224,13 @@ public class Hull : MonoBehaviour
 
             i++;
         }
+
+        isCannonBuild = true;
+    }
+
+    public bool GetIsCannonBuilt()
+    {
+        return isCannonBuild;
     }
 }
 
