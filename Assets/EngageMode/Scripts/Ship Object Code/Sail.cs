@@ -89,6 +89,11 @@ public class Sail : MonoBehaviour
         return Mathf.Lerp(0.0f, maxSailSpeed * GetNormalizedHealth(), GetSailLevelNormalized());
     }
 
+    public float GetCurrentAcceleration()
+    {
+        return Mathf.Lerp(0.0f, acceleration, GetSailLevelNormalized());
+    }
+
     public void ChangeSailLevel(bool increment = true)
     {
         int changeAmt = (increment) ? 1 : -1;

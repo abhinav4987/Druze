@@ -14,7 +14,7 @@
    id="svg8"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    sodipodi:docname="ButtonsVector.svg"
-   inkscape:export-filename="D:\Projects\Unity3D\WoO-Engage\Assets\EngageMode\Sprites\UI\Icons\shoot_icon.png"
+   inkscape:export-filename="D:\Projects\Unity3D\WoO-Engage\Assets\EngageMode\Sprites\UI\Icons\health_radial_back.png"
    inkscape:export-xdpi="250"
    inkscape:export-ydpi="250">
   <defs
@@ -229,9 +229,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.37651429"
-     inkscape:cx="192.93693"
-     inkscape:cy="859.22104"
+     inkscape:zoom="1.0649432"
+     inkscape:cx="230.74141"
+     inkscape:cy="1416.6092"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -370,6 +370,14 @@
        id="circle1105"
        cx="-26.351921"
        cy="552.56226"
+       r="36.927219"
+       inkscape:export-xdpi="238.92999"
+       inkscape:export-ydpi="238.92999" />
+    <circle
+       style="opacity:0.9935;fill:#ffffff;fill-opacity:0;stroke:#ffffff;stroke-width:5.29167;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle994"
+       cx="-26.351921"
+       cy="465.60535"
        r="36.927219"
        inkscape:export-xdpi="238.92999"
        inkscape:export-ydpi="238.92999" />

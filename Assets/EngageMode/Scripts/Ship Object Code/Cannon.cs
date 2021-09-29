@@ -6,6 +6,8 @@ using UnityEngine;
 public class Cannon : MonoBehaviour
 {
 
+    public ParticleSystem smokePS;
+
     private bool reloaded = true;
 
     private float remaningReloadTime = 0;
@@ -32,6 +34,7 @@ public class Cannon : MonoBehaviour
             Rigidbody rb = Instantiate(cannonBall, cannonBallLocation.position, cannonBallLocation.rotation).GetComponent<Rigidbody>();
             rb.velocity = cannonBallLocation.forward * initialSpeed;
             remaningReloadTime = reloadTime;
+            Instantiate(smokePS, cannonBallLocation.position, cannonBallLocation.rotation);
             StartCoroutine(Reload());
         }
     }
@@ -108,6 +111,7 @@ public class Cannon : MonoBehaviour
 
     private void Start()
     {
-        cannonBallLocation = GetComponentsInChildren<Transform>()[1];
+        Transform[] transforms = GetComponentsInChildren<Transform>();
+        cannonBallLocation = transforms[transforms.Length - 1];
     }
 }

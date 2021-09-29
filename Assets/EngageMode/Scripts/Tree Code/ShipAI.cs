@@ -12,8 +12,10 @@ public class ShipAI : MonoBehaviour
     private float shootingRange;
     public float collisionRange;
     public float maneuverableAngle;
-    public Hull selfHull;
+    private Hull selfHull = null;
     public Hull enemyHull;
+
+    private bool AIActive = false;
 
     [SerializeField]
     private Transform debugCenterTransform;
@@ -23,8 +25,23 @@ public class ShipAI : MonoBehaviour
         return (initialSpeed * initialSpeed * Mathf.Sin(2 * angle)) / Physics.gravity.magnitude;
     }
 
-    void Start()
+    IEnumerator HullReadyCoroutine()
     {
+        while (true)
+        {
+            yield return new WaitForSeconds(Time.deltaTime);
+            try
+            {
+                selfHull = GetComponentInChildren<Hull>();
+                break;
+            }
+            catch (System.Exception)
+            {
+
+            }
+            
+        }
+
         shootingRange = cannonMaxShootDistance(selfHull.GetCannonInitialSpeed(), selfHull.GetMaxCannonAngle() * Mathf.Deg2Rad);
 
         shipParameters = new ShipAIParameters(
@@ -36,7 +53,21 @@ public class ShipAI : MonoBehaviour
                 enemyHull
             );
 
+        selfHull.OnDefeat += SelfHull_OnDefeat;
+        AIActive = true;
+        yield return null;
+    }
+
+    void Start()
+    {
+        StartCoroutine(HullReadyCoroutine());
         ConstructBehaviourTree();
+    }
+
+    private void SelfHull_OnDefeat(object sender, System.EventArgs e)
+    {
+        Debug.Log("Deactivating AI");
+        AIActive = false;
     }
 
     private void ConstructBehaviourTree()
@@ -80,7 +111,7 @@ public class ShipAI : MonoBehaviour
 
         HealthCheckerNode healthCheckerNode = new HealthCheckerNode();
 
-        float verticalAllowedAngleRange = 0.5f, horizontalAllowedAngleRange = 3.0f, targetAngle = 90f;
+        float verticalAllowedAngleRange = 0.1f, horizontalAllowedAngleRange = 1.0f, targetAngle = 90f;
         DesiredAngleCheckerNode desiredAngleCheckerNode = new DesiredAngleCheckerNode(verticalAllowedAngleRange);
         ShipAlignmentCheckerNode shipAlignmentCheckerNode = new ShipAlignmentCheckerNode(horizontalAllowedAngleRange, targetAngle);
         DesiredCannoRreadyCheckerNode desiredCannonReadyCheckerNode = new DesiredCannoRreadyCheckerNode();
@@ -150,7 +181,7 @@ public class ShipAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(topNode != null)
+        if(AIActive && topNode != null)
             topNode.Evaluate(shipParameters, shipControls);
     }
 

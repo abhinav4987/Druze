@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-
-public class Hull : MonoBehaviour
+[System.Serializable]
+public class Hull : MonoBehaviour, IDamageHandler
 {
 
     private Rigidbody rb;
@@ -12,6 +12,7 @@ public class Hull : MonoBehaviour
     public GameObject cannonPrefab;
 
     public event EventHandler OnDamage;
+    public event EventHandler OnDefeat;
 
     private bool isCannonBuild = false;
 
@@ -146,10 +147,13 @@ public class Hull : MonoBehaviour
         }
     }
 
-    public void TakeDmage(float damageIncurred) {
-        currentHealth = Mathf.Clamp(currentHealth - damageIncurred,0, maxHealth);
+    public void Damage(float damageValue) {
+        currentHealth = Mathf.Clamp(currentHealth - damageValue,0, maxHealth);
+        Debug.Log(currentHealth);
         OnDamage?.Invoke(this, EventArgs.Empty);
-}
+        if (GetCurrentHealth() <= 0)
+            OnDefeat?.Invoke(this, EventArgs.Empty);
+    }
 
     public void RotateHull(bool leftRotate, float modifierValue = 1)
     {
@@ -159,13 +163,11 @@ public class Hull : MonoBehaviour
 
     void UpdateCurrentSpeed () {
         float desiredSpeed = shipSail.GetCurrentSpeed();
-        int dir;
-        if (currentSpeed <= desiredSpeed)
-            dir = 1;
-        else
-            dir = -1;
-        currentSpeed = Mathf.Clamp(currentSpeed + dir * shipSail.GetAcceleration() * Time.deltaTime, 0, desiredSpeed);
-        rb.velocity = currentSpeed * transform.right;
+        if(rb.velocity.magnitude < desiredSpeed)
+        {
+            Vector3 sailForce = shipSail.GetCurrentAcceleration() * transform.right;
+            rb.AddForce(sailForce, ForceMode.Acceleration);
+        }
     }
 
 

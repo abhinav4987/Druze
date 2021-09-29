@@ -5,19 +5,37 @@ using UnityEngine.UI;
 
 public class UIEnemyHullHealthController : MonoBehaviour
 {
-    [SerializeField]
-    private HullHealthBarController enemyHealthBarController;
+    private GetClosestEnemyInFront closestEnemyGetter;
 
     private Image image;
+    [SerializeField]
+    private Image backImage;
+
+    private Color inactiveSelfColor, activeSelfColor, inactiveBackColor, activeBackColor;
 
     private void Start()
     {
         image = GetComponent<Image>();
+        inactiveSelfColor = Color.clear;
+        inactiveBackColor = Color.clear;
+        activeSelfColor = image.color;
+        activeBackColor = backImage.color;
+        closestEnemyGetter = GetComponent<GetClosestEnemyInFront>();
     }
 
     void Update()
     {
-        if (enemyHealthBarController.IsReady())
+        HullHealthBarController enemyHealthBarController = closestEnemyGetter.GetClosestBarController();
+        if(enemyHealthBarController == null)
+        {
+            backImage.color = inactiveBackColor;
+            image.color = inactiveSelfColor;
+        }
+        else if(enemyHealthBarController.IsReady())
+        {
             image.fillAmount = enemyHealthBarController.GetBarControllerValue();
+            backImage.color = activeBackColor;
+            image.color = activeSelfColor;
+        }
     }
 }

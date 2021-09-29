@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Ram : MonoBehaviour
+public class Ram : MonoBehaviour, IDamageHandler
 {
+    [SerializeField]
     private float maxDamage;
     private float prevCollisionTime = 0;
     public float GetMaxDamage()
@@ -17,13 +18,34 @@ public class Ram : MonoBehaviour
         this.maxDamage = maxDamage;
     }
 
-    public float DamageObject(float currSpeed)
+    public float GetDamage()
     {
-        return Mathf.Lerp(0.0f, maxDamage, currSpeed);
+        return maxDamage;
     }
 
     public float GetPrevCollisionTime()
     {
         return prevCollisionTime;
+    }
+
+    public void Damage(float damageValue)
+    {
+        GetComponentInParent<Hull>().Damage(damageValue);
+    }
+
+    private void FixedUpdate()
+    {
+        prevCollisionTime += Time.deltaTime;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        IDamageHandler damageHandler = collision.gameObject.GetComponent<IDamageHandler>();
+        if(damageHandler != null)
+        {
+            Debug.Log("Ram collided");
+            damageHandler.Damage(GetDamage());
+            prevCollisionTime = 0;
+        }
     }
 }

@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: a63b3c82564c7e644b887da5dc9f8413, type: 3}
+  - {fileID: 2100000, guid: d7735d977d2951549b88343b83022fd1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -202,7 +202,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: a63b3c82564c7e644b887da5dc9f8413, type: 3}
+  - {fileID: 2100000, guid: 4ad14e0d82666a34f86b39efe184d281, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c58a37ae1501843ac3033a07a4ac14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smokePS: {fileID: 7679517831455410093, guid: 8a710859bdfa8814a82ee895fd5533ea, type: 3}
   reloadTime: 10
   initialSpeed: 10
   maxAngle: 30

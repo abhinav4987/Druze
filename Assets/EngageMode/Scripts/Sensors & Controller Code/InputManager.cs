@@ -18,6 +18,7 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
+        Input.multiTouchEnabled = false;
         isRotating = false;
         isLeftDirection = false;
         hull = ship.GetComponentInChildren<Hull>();

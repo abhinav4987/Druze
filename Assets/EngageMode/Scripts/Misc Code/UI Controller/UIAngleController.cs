@@ -29,8 +29,12 @@ public class UIAngleController : MonoBehaviour
     public void SetIdentifierPosition()
     {
         image.color = activeColor;
-        float parentOffset = (Screen.height - parentRectTransform.rect.height);
-        float mouseY = Input.mousePosition.y - parentOffset;
+        float parentOffset = (Screen.height - parentRectTransform.rect.height) * 0.5f;
+        float mouseY = 0;
+        if (Input.touchCount > 0)
+            mouseY = Input.GetTouch(0).position.y - parentOffset;
+        else
+            mouseY = Input.mousePosition.y - parentOffset;
         mouseY = Mathf.Clamp(mouseY / (Screen.height - 2 * parentOffset), 0, 1);
         rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, mouseY * parentRectTransform.rect.height);
 
